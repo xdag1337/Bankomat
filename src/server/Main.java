@@ -16,11 +16,6 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Server Banking");
         primaryStage.setScene(new Scene(root, 640, 400));
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent windowEvent) {
-                Platform.exit();
-            }
-        });
         primaryStage.show();
     }
 

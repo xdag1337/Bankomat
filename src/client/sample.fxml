@@ -7,6 +7,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root prefHeight="400.0" prefWidth="640.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controller">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controller">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -57,17 +58,17 @@
         </MenuBar>
         <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <children>
-                <TextField fx:id="userName" layoutX="14.0" layoutY="27.0" />
-                <TextField fx:id="userPassword" layoutX="14.0" layoutY="69.0" />
-                <Button fx:id="loginButton" layoutX="14.0" layoutY="114.0" mnemonicParsing="false" onAction="#actionLogin" text="LogIn" />
-                <GridPane fx:id="userLayout" layoutX="211.0" layoutY="24.0" prefHeight="90.0" prefWidth="241.0" visible="false">
+                <TextField fx:id="userName" layoutX="23.0" layoutY="121.0" />
+                <TextField fx:id="userPassword" layoutX="23.0" layoutY="163.0" />
+                <Button fx:id="loginButton" disable="true" layoutX="23.0" layoutY="191.0" mnemonicParsing="false" onAction="#actionLogin" text="LogIn" />
+                <GridPane fx:id="userLayout" layoutX="268.0" layoutY="37.0" prefHeight="90.0" prefWidth="241.0" visible="false">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
@@ -78,9 +79,7 @@
                         <Button fx:id="transactionButton" mnemonicParsing="false" onAction="#actionTransaction" text="New Transaction" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                     </children>
                 </GridPane>
-                <Label layoutX="14.0" layoutY="344.0" text="Status:" />
-                <Label fx:id="labelMessage" layoutX="63.0" layoutY="344.0" prefHeight="17.0" prefWidth="564.0" />
-                <GridPane fx:id="transactionLayout" layoutX="211.0" layoutY="162.0" prefHeight="119.0" prefWidth="297.0" visible="false">
+                <GridPane fx:id="transactionLayout" layoutX="268.0" layoutY="203.0" prefHeight="119.0" prefWidth="297.0" visible="false">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -101,10 +100,14 @@
                         <Button fx:id="sendButton" mnemonicParsing="false" onAction="#actionSend" text="Apply" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                     </children>
                 </GridPane>
-            <Button fx:id="logoutButton" disable="true" layoutX="107.0" layoutY="114.0" mnemonicParsing="false" onAction="#actionLogout" text="LogOut" />
+            <Button fx:id="logoutButton" disable="true" layoutX="107.0" layoutY="191.0" mnemonicParsing="false" onAction="#actionLogout" text="LogOut" />
             <Label fx:id="labelPassword" layoutX="23.0" layoutY="94.0" prefHeight="17.0" prefWidth="127.0" />
-            <CheckBox fx:id="chekcRem" layoutX="14.0" layoutY="52.0" mnemonicParsing="false" text="Remember user" />
+            <CheckBox fx:id="chekcRem" layoutX="23.0" layoutY="146.0" mnemonicParsing="false" text="Remember user" />
+            <TextArea fx:id="areaLog" editable="false" focusTraversable="false" layoutX="19.0" layoutY="233.0" prefHeight="129.0" prefWidth="200.0" />
+            <Label layoutX="23.0" layoutY="29.0" text="Server:" />
+            <TextField fx:id="serverIP" focusTraversable="false" layoutX="61.0" layoutY="25.0" prefHeight="25.0" prefWidth="89.0" promptText="localhost" />
+            <Button fx:id="connectButton" layoutX="20.0" layoutY="69.0" mnemonicParsing="false" onAction="#actionConnect" text="Connect" />
             </children>
         </AnchorPane>
     </children>
-</fx:root>
+</VBox>

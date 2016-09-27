@@ -15,13 +15,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Bankomat!!!");
+        primaryStage.setTitle("Client Banking");
         primaryStage.setScene(new Scene(root, 640, 400));
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent windowEvent) {
-                Platform.exit();
-            }
-        });
         primaryStage.show();
     }
 
