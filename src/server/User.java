@@ -6,10 +6,12 @@ public class User {
 
     private String name = null;
     private String password = null;
+    private float balance = 0;
 
-    User(String name, String password){
+    User(String name, String password, String balance){
         this.name = name;
         this.password = password;
+        this.balance = Float.parseFloat(balance);
     }
 
     public String getName(){
@@ -18,4 +20,5 @@ public class User {
     public String getPassword(){
         return this.password;
     }
+    public String getBalance(){return ("" + this.balance);}
 }
