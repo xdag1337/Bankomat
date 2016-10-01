@@ -3,6 +3,7 @@ package server;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -20,7 +21,7 @@ public class Controller {
 
     @FXML Button startButton;
     @FXML static TextArea areaLog;
-    @FXML TextField infaChel;
+    @FXML TextField infaChel, clientName, clientPassword, clientBalance;
     @FXML Label infaName, infaBalance, infaStatus;
     @FXML public void startAction(){
         new ServerThread();
@@ -47,6 +48,14 @@ public class Controller {
 
     }
 
+
+    public void addClient() {
+        if(clientName.getText().equals("")||clientPassword.getText().equals("")||clientBalance.getText().equals("")){
+            updateLog("Все поля обязательны для заполнения!");
+        }else{
+        sf.clientsBase.add(new User(clientName.getText(),clientPassword.getText(),clientBalance.getText()));
+        }
+    }
 
     private static class ServerThread implements Runnable{
         int th = 0;

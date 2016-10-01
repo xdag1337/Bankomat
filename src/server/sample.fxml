@@ -69,8 +69,8 @@
             <TextArea fx:id="areaLog" editable="false" focusTraversable="false" layoutX="13.0" layoutY="161.0" prefHeight="200.0" prefWidth="200.0" />
             <Label layoutX="13.0" layoutY="144.0" text="Server log:" />
             <Separator layoutX="236.0" layoutY="8.0" orientation="VERTICAL" prefHeight="362.0" prefWidth="5.0" />
-            <Button layoutX="258.0" layoutY="35.0" mnemonicParsing="false" text="Add" />
-            <Button layoutX="315.0" layoutY="35.0" mnemonicParsing="false" text="Delete" />
+            <Button fx:id="addButton" layoutX="258.0" layoutY="35.0" mnemonicParsing="false" onAction="#addClient" text="Add" />
+            <Button fx:id="delButton" layoutX="315.0" layoutY="35.0" mnemonicParsing="false" onAction="#delClient" text="Delete" />
             <Button layoutX="383.0" layoutY="35.0" mnemonicParsing="false" text="Correct" />
             <Label layoutX="394.0" layoutY="16.0" text="Clients database" />
             <Separator layoutX="237.0" layoutY="170.0" prefHeight="4.0" prefWidth="402.0" />
@@ -111,12 +111,13 @@
                   <Label text="Name:" />
                   <Label text="Password:" GridPane.rowIndex="1" />
                   <Label text="Balance:" GridPane.rowIndex="2" />
-                  <TextField GridPane.columnIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="clientName" GridPane.columnIndex="1" />
+                  <TextField fx:id="clientPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="clientBalance" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <Label layoutX="447.0" layoutY="39.0" prefHeight="17.0" prefWidth="185.0" text="message" />
+            <Label layoutX="321.0" layoutY="227.0" prefHeight="17.0" prefWidth="149.0" text="message" />
          </children>
     </AnchorPane>
   </children>
