@@ -21,4 +21,8 @@ public class User {
         return this.password;
     }
     public String getBalance(){return ("" + this.balance);}
+
+    public void setBalance(float balance) {
+        this.balance = balance;
+    }
 }

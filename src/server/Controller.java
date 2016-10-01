@@ -1,5 +1,6 @@
 package server;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -13,11 +14,14 @@ import java.util.Map;
 
 public class Controller {
 
+    private static ServerFunction sf = new ServerFunction();
+
     private static StringBuilder log = new StringBuilder();
 
     @FXML Button startButton;
     @FXML static TextArea areaLog;
-
+    @FXML TextField infaChel;
+    @FXML Label infaName, infaBalance, infaStatus;
     @FXML public void startAction(){
         new ServerThread();
     }
@@ -27,16 +31,32 @@ public class Controller {
         areaLog.setText(log.toString());
     }
 
+    public void showClient() {
+        User user1 = null;
+        for (int i = 0; i < sf.clientsBase.toArray().length; i++) {
+            if (sf.clientsBase.get(i).getName().equals(infaChel.getText())){
+                infaName.setText(sf.clientsBase.get(i).getName());
+                infaBalance.setText(sf.clientsBase.get(i).getBalance());
+            }else if (i == sf.clientsBase.toArray().length-1){
+                updateLog("User not found");
+                infaName.setText("");
+                infaBalance.setText("");
+            }
+
+        }
+
+    }
+
+
     private static class ServerThread implements Runnable{
         int th = 0;
         static int index = 0;
-        static  Map<Integer, Integer> sevPorts = new HashMap<>();
+        static  Map<Integer, Integer> sevPorts = new HashMap();
         static int sevPort = 1110;
         Thread sevThread;
         DataInputStream dataInput;
         DataOutputStream dataOutput;
         String query = null;
-        private ServerFunction sf = new ServerFunction();
         {
             while (true){
                 if (sevPorts.containsKey(index)) index++;
@@ -53,7 +73,7 @@ public class Controller {
             sevThread = new Thread(this, "" + System.nanoTime());
             sevThread.start();
         }
-        @Override
+//        @Override
         public synchronized void run() {
             if (sevPorts.containsKey(th)) {
                 try {
