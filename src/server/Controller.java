@@ -54,7 +54,23 @@ public class Controller {
             updateLog("Все поля обязательны для заполнения!");
         }else{
         sf.clientsBase.add(new User(clientName.getText(),clientPassword.getText(),clientBalance.getText()));
+            updateLog("Создан новый клиент");
+
         }
+    }
+
+    public void delClient() {
+        for (int i = 0; i < sf.clientsBase.toArray().length; i++) {
+            if (sf.clientsBase.get(i).getName().equals(clientName.getText())){
+                sf.clientsBase.remove(i);
+                updateLog("Клиент удален");
+            }else if (i == sf.clientsBase.toArray().length-1){
+                updateLog("Клиент не найден");
+            }
+        }
+    }
+
+    public void correction(ActionEvent actionEvent) {
     }
 
     private static class ServerThread implements Runnable{
