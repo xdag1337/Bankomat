@@ -19,7 +19,7 @@ public class Controller {
 
     private static StringBuilder log = new StringBuilder();
 
-    @FXML Button startButton;
+    @FXML Button startButton, stopButton;
     @FXML static TextArea areaLog;
     @FXML TextField infaChel, clientName, clientPassword, clientBalance;
     @FXML Label infaName, infaBalance, infaStatus;
@@ -70,7 +70,40 @@ public class Controller {
         }
     }
 
-    public void correction(ActionEvent actionEvent) {
+
+    public void correction() {
+
+        for (int i = 0; i < sf.clientsBase.toArray().length; i++){
+            if (sf.clientsBase.get(i).getName().equals(clientName.getText())){
+                if (sf.clientsBase.get(i).getPassword().equals(clientPassword.getText())){
+                    updateLog("Новый пароль должен отличаться от старого!");
+                }else if(clientPassword.getText().equals("")){
+                    updateLog("Введите новый пароль");
+                }else{
+                sf.clientsBase.get(i).setPassword(clientPassword.getText());
+                updateLog("Пароль изменен");
+                }
+            }else if(i == sf.clientsBase.toArray().length-1){
+                updateLog("Неверное имя клиента");
+            }
+        }
+        for (int i = 0; i < sf.clientsBase.toArray().length; i++) {
+            if (sf.clientsBase.get(i).getName().equals(clientName.getText())) {
+                if (sf.clientsBase.get(i).getBalance().equals(clientBalance.getText())){
+                    updateLog("Новый баланс должен отличаться от старого!");
+                }else if(clientBalance.getText().equals("")){
+                    updateLog("Введите новый баланс!");
+                }else {
+                    sf.clientsBase.get(i).setBalance(Float.parseFloat(clientBalance.getText()));
+                    updateLog("Баланс изменен");
+                }
+            } else if (i == sf.clientsBase.toArray().length - 1) {
+                updateLog("Неверное имя клиента");
+            }
+        }
+    }
+
+    public void stopServer() {
     }
 
     private static class ServerThread implements Runnable{
@@ -98,6 +131,7 @@ public class Controller {
             sevThread = new Thread(this, "" + System.nanoTime());
             sevThread.start();
         }
+
 //        @Override
         public synchronized void run() {
             if (sevPorts.containsKey(th)) {
@@ -117,6 +151,7 @@ public class Controller {
                 }
             }
         }
+
 
         private String queryHandler(String queryFromClient) {
             String temp = null;
@@ -153,4 +188,5 @@ public class Controller {
             return temp;
         }
     }
+
 }
