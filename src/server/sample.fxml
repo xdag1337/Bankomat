@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.Controller">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.Controller">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
@@ -116,8 +116,6 @@
                         <TextField fx:id="clientBalance" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                     </children>
                 </GridPane>
-                <Label layoutX="447.0" layoutY="39.0" prefHeight="17.0" prefWidth="185.0" text="message" />
-                <Label layoutX="321.0" layoutY="227.0" prefHeight="17.0" prefWidth="149.0" text="message" />
             </children>
         </AnchorPane>
     </children>

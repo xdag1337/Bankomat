@@ -13,6 +13,7 @@ public class Controller {
     private static boolean login = false;
     private static boolean trans = false;
     private static int port = 0;
+    private static int portMAX = 1120;
     private StringBuilder log = new StringBuilder();
     public  String answer = "connected";//переменная, содержит в себе запрос на сервер, изменяется взависимости ответа от сервера
     private DataOutputStream dataOutput;
@@ -51,6 +52,7 @@ public class Controller {
         updateLog("Login checking...");
         login = true;
     }
+
     @FXML public void actionLogout(){
         if (!chekcRem.isSelected()){
             userName.setText("");
@@ -120,6 +122,7 @@ public class Controller {
         else log.append("\n"+message);
         areaLog.setText(log.toString());
     }
+
     class ClientThread implements  Runnable{
 
         Thread thread;
@@ -147,8 +150,13 @@ public class Controller {
 
                 } catch (Exception e) {
                     updateLog(port + " - port is busy");
-                    port++;
-                    new ClientThread();
+                    if(port != portMAX) {
+                        port++;
+                        new ClientThread();
+                    }else {
+                        updateLog("Server closed");
+                    }
+
                 }
             }
         }

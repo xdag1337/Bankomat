@@ -10,10 +10,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.RunnableFuture;
 
 public class Controller {
+
+    public static ArrayList<ServerThread> threads = new ArrayList<>();
 
     private static ServerFunction sf = new ServerFunction();
 
@@ -24,7 +28,8 @@ public class Controller {
     @FXML TextField infaChel, clientName, clientPassword, clientBalance;
     @FXML Label infaName, infaBalance, infaStatus;
     @FXML public void startAction(){
-        new ServerThread();
+      new ServerThread();
+
     }
 
     private static void updateLog(String message){
@@ -104,9 +109,13 @@ public class Controller {
     }
 
     public void stopServer() {
+        for (ServerThread sThread: threads) {
+            sThread.setStop(true);
+        }
     }
 
     private static class ServerThread implements Runnable{
+        private Boolean stop = false;
         int th = 0;
         static int index = 0;
         static  Map<Integer, Integer> sevPorts = new HashMap();
@@ -130,10 +139,15 @@ public class Controller {
 
         ServerThread(){
             sevThread = new Thread(this, "" + System.nanoTime());
+            threads.add(this);
             sevThread.start();
         }
 
-//        @Override
+        public void setStop(Boolean stop) {
+            this.stop = stop;
+        }
+
+        //        @Override
         public synchronized void run() {
             if (sevPorts.containsKey(th)) {
                 try {
@@ -142,11 +156,12 @@ public class Controller {
                     Socket socket = serverSocket.accept();
                     dataInput = new DataInputStream(socket.getInputStream());
                     dataOutput = new DataOutputStream(socket.getOutputStream());
-                    while (true) {
+                    while (!stop) {
                         query = dataInput.readUTF();
                         dataOutput.writeUTF(queryHandler(query));
                         dataOutput.flush();
                     }
+                    if(stop) updateLog("Server Stoped");
 
                 } catch (Exception e) {
                 }
