@@ -29,11 +29,6 @@ public class ServerFunction {
             else return false;
     }
 
-    public String getUserBalance(String name, String password){
-        if (chekPassword(name, password)) return clientsBase.get(findUser(name)).getBalance();
-        else return "0,0";
-    }
-
     public boolean tranzaction(String client1, String client2, float suma){
         float temp1 = 0;
         float temp2 = 0;
@@ -42,13 +37,13 @@ public class ServerFunction {
         try {
             for (User user : clientsBase) {
                 if (user.getName().equals(client1)) {
-                    temp1 = Float.parseFloat(user.getBalance());
+                    temp1 = user.getBalance();
                     user1 = user;
                 } else {
                     return false;
                 }
                 if (user.getName().equals(client2)) {
-                    temp2 = Float.parseFloat(user.getBalance());
+                    temp2 = user.getBalance();
                     user2 = user;
                 } else {
                     return false;

@@ -37,7 +37,7 @@ public class Controller {
         for (int i = 0; i < sf.clientsBase.toArray().length; i++) {
             if (sf.clientsBase.get(i).getName().equals(infaChel.getText())){
                 infaName.setText(sf.clientsBase.get(i).getName());
-                infaBalance.setText(sf.clientsBase.get(i).getBalance());
+                infaBalance.setText("" + sf.clientsBase.get(i).getBalance());
             }else if (i == sf.clientsBase.toArray().length-1){
                 updateLog("User not found");
                 infaName.setText("");
@@ -89,7 +89,7 @@ public class Controller {
         }
         for (int i = 0; i < sf.clientsBase.toArray().length; i++) {
             if (sf.clientsBase.get(i).getName().equals(clientName.getText())) {
-                if (sf.clientsBase.get(i).getBalance().equals(clientBalance.getText())){
+                if ((""+sf.clientsBase.get(i).getBalance()).equals(clientBalance.getText())){
                     updateLog("Новый баланс должен отличаться от старого!");
                 }else if(clientBalance.getText().equals("")){
                     updateLog("Введите новый баланс!");
@@ -115,6 +115,7 @@ public class Controller {
         DataInputStream dataInput;
         DataOutputStream dataOutput;
         String query = null;
+        User user;
         {
             while (true){
                 if (sevPorts.containsKey(index)) index++;
@@ -155,7 +156,7 @@ public class Controller {
 
         private String queryHandler(String queryFromClient) {
             String temp = null;
-            String[] logpas = new String[2];
+            String[] logpas;
             try {
                 switch (queryFromClient) {
                     case "wait":
@@ -172,19 +173,18 @@ public class Controller {
                         dataOutput.flush();
                         logpas = dataInput.readUTF().split(" ");
                         if (sf.chekPassword(logpas[0], logpas[1])) {
+                            user = sf.clientsBase.get(sf.findUser(logpas[0]));
                             temp = "loginOK";
                             updateLog(logpas[0] + " is login");
                         } else temp = "errorLogin";
                         break;
                     case "balance":
-                            temp = "00";//sf.getUserBalance(logpas[0], logpas[1]);
+                            temp = "balance " + user.getName() + " " + user.getBalance();
                             dataOutput.writeUTF(temp);
                             dataOutput.flush();
                         break;
                     case "transaction": temp = "transaction"; break;
-                    default:
-                        temp = "pause";
-                        break;
+                    default: break;
                 }
             }catch(Exception e){}
             return temp;

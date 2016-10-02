@@ -23,7 +23,7 @@ public class User {
     public String getPassword(){
         return this.password;
     }
-    public String getBalance(){return ("" + this.balance);}
+    public float getBalance(){return (this.balance);}
     
     
 

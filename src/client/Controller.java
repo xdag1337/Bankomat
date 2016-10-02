@@ -30,8 +30,8 @@ public class Controller {
     @FXML TextField sendToName;
     @FXML TextField sendSum;
     @FXML TextField sendPassvord;
-    @FXML TextField serverIP, serverPort;
-    @FXML Label labelName, labelBalance, labelPassword;
+    @FXML TextField serverIP, serverPort, labelName, labelBalance;
+    @FXML Label  labelPassword;
     @FXML GridPane userLayout;
     @FXML GridPane transactionLayout;
     @FXML CheckBox chekcRem;
@@ -43,8 +43,9 @@ public class Controller {
         try {
             address = InetAddress.getByName(serverIP.getText());
         }catch(Exception e){}
-
-        new ClientThread();
+        synchronized (ClientThread.class) {
+            new ClientThread();
+        }
     }
     @FXML public void actionLogin(){
         updateLog("Login checking...");
@@ -104,7 +105,13 @@ public class Controller {
             case "errorLogin":  updateLog("Wrong login or password");
                                 temp = "wait"; break;
             case "transaction": transactionLayout.setVisible(true); temp = "wait"; break;
-            default: labelBalance.setText(answer); break;
+            default: if(answer.startsWith("balance")){
+                String[] bal;
+                bal = answer.split(" ");
+                labelName.setText(bal[1]);
+                labelBalance.setText(bal[2]);
+                temp = "balance";
+            } break;
         }
         return temp;
     }
@@ -123,25 +130,26 @@ public class Controller {
         }
         @Override
         public void run() {
-            try {
-                synchronized (ClientThread.class) {
-                    socket = new Socket(address, port);
-                }
-                updateLog("Connecting...");
-                dataInput = new DataInputStream(socket.getInputStream());
-                dataOutput = new DataOutputStream(socket.getOutputStream());
-                dataOutput.writeUTF(answer);                 //первый запрос на сервер
-                dataOutput.flush();
-                while (true) {
-                    answer = dataInput.readUTF();//принимаем ответ
-                    dataOutput.writeUTF(queryHandler(answer));       //обрабатывает ответ и формирует новый запрос
-                    dataOutput.flush();
-                }
+            synchronized (ClientThread.class) {
+                try {
 
-            } catch (Exception e) {
-                updateLog( port + " - port is busy");
-                port++;
-                new ClientThread();
+                    socket = new Socket(address, port);
+                    updateLog("Connecting...");
+                    dataInput = new DataInputStream(socket.getInputStream());
+                    dataOutput = new DataOutputStream(socket.getOutputStream());
+                    dataOutput.writeUTF(answer);                 //первый запрос на сервер
+                    dataOutput.flush();
+                    while (true) {
+                        answer = dataInput.readUTF();//принимаем ответ
+                        dataOutput.writeUTF(queryHandler(answer));       //обрабатывает ответ и формирует новый запрос
+                        dataOutput.flush();
+                    }
+
+                } catch (Exception e) {
+                    updateLog(port + " - port is busy");
+                    port++;
+                    new ClientThread();
+                }
             }
         }
     }
