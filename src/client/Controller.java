@@ -18,6 +18,8 @@ public class Controller {
     public  String answer = "connected";//переменная, содержит в себе запрос на сервер, изменяется взависимости ответа от сервера
     private DataOutputStream dataOutput;
     private DataInputStream dataInput;
+    private InetAddress address;
+    private Socket socket;
 
     @FXML Button loginButton;
     @FXML Button logoutButton;
@@ -38,30 +40,34 @@ public class Controller {
 
     @FXML public void actionConnect()  {  //активность кнопки Connect
         port = Integer.parseInt(serverPort.getText());
-        if(serverIP.getText().equals("")) serverIP.setText("localhost"); //значение IP адреса, если поле пустое
-            mainThread = new Thread() {  //новый поток для обмена данными с сервером
-                @Override
-                public void run() {
-                        try {
-                            InetAddress address = InetAddress.getByName(serverIP.getText());
-                            Socket socket = new Socket(address, port);
-                            updateLog("Client start");
-                            dataInput = new DataInputStream(socket.getInputStream());
-                            dataOutput = new DataOutputStream(socket.getOutputStream());
-                            dataOutput.writeUTF(answer);                 //первый запрос на сервер
-                            dataOutput.flush();
-                            while (true) {
-                                answer = dataInput.readUTF();//принимаем ответ
-                                dataOutput.writeUTF(queryHandler(answer));       //обрабатывает ответ и формирует новый запрос
-                                dataOutput.flush();
-                            }
-
-                        } catch (Exception e) {
-                            port++;
-                        }
-                    }
-            };
-            mainThread.start();
+        if(serverIP.getText().equals("")) serverIP.setText("localhost");
+        try {
+            address = InetAddress.getByName(serverIP.getText());
+        }catch(Exception e){}//значение IP адреса, если поле пустое
+//            mainThread = new Thread() {  //новый поток для обмена данными с сервером
+//                @Override
+//                public void run() {
+//                        try {
+//                            InetAddress address = InetAddress.getByName(serverIP.getText());
+//                            Socket socket = new Socket(address, port);
+//                            updateLog("Client start");
+//                            dataInput = new DataInputStream(socket.getInputStream());
+//                            dataOutput = new DataOutputStream(socket.getOutputStream());
+//                            dataOutput.writeUTF(answer);                 //первый запрос на сервер
+//                            dataOutput.flush();
+//                            while (true) {
+//                                answer = dataInput.readUTF();//принимаем ответ
+//                                dataOutput.writeUTF(queryHandler(answer));       //обрабатывает ответ и формирует новый запрос
+//                                dataOutput.flush();
+//                            }
+//
+//                        } catch (Exception e) {
+//                            port++;
+//                        }
+//                    }
+//            };
+//            mainThread.start();
+        new ClientThread();
     }
     @FXML public void actionLogin(){
         updateLog("Login checking...");
@@ -130,5 +136,39 @@ public class Controller {
         if (log.toString().equals("")) log.append(message);
         else log.append("\n"+message);
         areaLog.setText(log.toString());
+    }
+
+    class ClientThread implements  Runnable{
+
+        Thread thread;
+
+        ClientThread(){
+            thread = new Thread(this, "" + System.nanoTime());
+            thread.start();
+        }
+        @Override
+        public void run() {
+            try {
+                //address = InetAddress.getByName(serverIP.getText());
+                synchronized (ClientThread.class) {
+                    socket = new Socket(address, port);
+                }
+                updateLog("Connecting...");
+                dataInput = new DataInputStream(socket.getInputStream());
+                dataOutput = new DataOutputStream(socket.getOutputStream());
+                dataOutput.writeUTF(answer);                 //первый запрос на сервер
+                dataOutput.flush();
+                while (true) {
+                    answer = dataInput.readUTF();//принимаем ответ
+                    dataOutput.writeUTF(queryHandler(answer));       //обрабатывает ответ и формирует новый запрос
+                    dataOutput.flush();
+                }
+
+            } catch (Exception e) {
+                updateLog( port + " - port is busy");
+                port++;
+                new ClientThread();
+            }
+        }
     }
 }
