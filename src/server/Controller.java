@@ -177,7 +177,9 @@ public class Controller {
                         } else temp = "errorLogin";
                         break;
                     case "balance":
-                            //temp = sf.getUserBalance(logpas[0], logpas[1]);
+                            temp = "00";//sf.getUserBalance(logpas[0], logpas[1]);
+                            dataOutput.writeUTF(temp);
+                            dataOutput.flush();
                         break;
                     case "transaction": temp = "transaction"; break;
                     default:
